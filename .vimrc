@@ -1,3 +1,5 @@
+filetype off
+" call pathogen#infect()
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
@@ -5,6 +7,7 @@ set nu
 set smartindent
 syntax on
 filetype on
+filetype plugin indent on
 set nocompatible
 
 " avoid linux adding incremented tabs on copy-paste
@@ -62,29 +65,21 @@ augroup filetype
 augroup end
 
 " pathogen! Vim plugin manager
-call pathogen#infect()
+" call pathogen#infect()
 nnoremap ,m :w <BAR> !lessc % > %:t:r.css<CR><space>
 
-" make tabs autocomplete 'smartly'
-function! Smart_TabComplete()
-  let line = getline('.')                         " current line
+" Syntastic config
+let g:syntastic_python_checkers=['pyflakes']
 
-  let substr = strpart(line, -1, col('.')+1)      " from the start of the current
-                                                  " line to one character right
-                                                  " of the cursor
-  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
-  if (strlen(substr)==0)                          " nothing to match on empty string
-    return "\<tab>"
-  endif
-  let has_period = match(substr, '\.') != -1      " position of period, if any
-  let has_close_html = match(substr, "<\/") != -1 " position of '</', if any
-  let has_slash = match(substr, '\/') != -1       " position of slash, if any
-  " if (!has_period && !has_slash)
-  "  return "\<C-X>\<C-P>"                         " existing text matching
-  if ( !has_close_html && has_slash )
-    return "\<C-X>\<C-F>"                         " file matching
-  else
-    return "\<C-X>\<C-O>"                         " plugin matching
-  endif
-endfunction
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+" Make vim recognize virtual env
+" Add the virtualenv's site-packages to vim path
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
