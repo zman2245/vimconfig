@@ -1,7 +1,30 @@
 filetype off
+" pathogen! Vim plugin manager
 " call pathogen#infect()
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+nnoremap ,m :w <BAR> !lessc % > %:t:r.css<CR><space>
+" let mapleader = "\\"
+
+" To disable a plugin, add it's bundle name to the following list
+let g:pathogen_disabled = []
+" call add(g:pathogen_disabled, 'supertab')
+ call add(g:pathogen_disabled, 'minibufexpl')
+ call add(g:pathogen_disabled, 'ultisnips')
+" call add(g:pathogen_disabled, 'ack')
+ call add(g:pathogen_disabled, 'command-t')
+ call add(g:pathogen_disabled, 'fugitive')
+ call add(g:pathogen_disabled, 'git')
+ call add(g:pathogen_disabled, 'gundo')
+ call add(g:pathogen_disabled, 'makegreen')
+ call add(g:pathogen_disabled, 'pep8')
+ call add(g:pathogen_disabled, 'py.test')
+ call add(g:pathogen_disabled, 'pydoc')
+ call add(g:pathogen_disabled, 'surround')
+" call add(g:pathogen_disabled, 'syntastic')
+ call add(g:pathogen_disabled, 'vim-less')
+
+call pathogen#infect()
+"call pathogen#runtime_append_all_bundles()
+"call pathogen#helptags()
 
 set nu
 set smartindent
@@ -41,7 +64,11 @@ map <C-_> <C-w><C-_>
 set pastetoggle=<F10>
 inoremap <C-v> <F10><C-r>+<F10>
 
+" Ack file searching
+nmap <leader>a <Esc>:Ack!
+
 " turn on autocompletion
+set omnifunc=syntaxcomplete#Complete
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
@@ -56,6 +83,10 @@ autocmd Filetype gitcommit setlocal spell textwidth=72
 au BufReadPost *.phpt set syntax=php
 
 " Python-specific
+let g:SuperTabDefaultCompletionType = "context"
+
+" pydoc
+set completeopt=menuone,longest,preview
 
 " This beauty remembers where you were the last time you edited the file, and returns to the same position.
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
@@ -63,10 +94,6 @@ au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|
 augroup filetype
   au! BufRead,BufNewFile *.proto setfiletype proto
 augroup end
-
-" pathogen! Vim plugin manager
-" call pathogen#infect()
-nnoremap ,m :w <BAR> !lessc % > %:t:r.css<CR><space>
 
 " Syntastic config
 let g:syntastic_python_checkers=['pyflakes']
