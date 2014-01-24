@@ -46,3 +46,9 @@
 [submodule "bundle/tasklist"]
 	path = bundle/tasklist
 	url = https://github.com/vim-scripts/TaskList.vim.git
+[submodule "bundle/dash_funcoo"]
+	path = bundle/dash_funcoo
+	url = https://github.com/rizzatti/funcoo.vim.git
+[submodule "bundle/dash"]
+	path = bundle/dash
+	url = https://github.com/rizzatti/dash.vim.git
